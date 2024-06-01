@@ -1,9 +1,10 @@
 import { User } from "../models/user.models";
 import axios from "axios";
+import qs from "qs";
 async function createUser(input) {
   try {
     const user = await User.create(input);
-    return omit(user.toJSON(), "password");
+    return user.toJSON().select("-password");
   } catch (e) {
     throw new Error(e);
   }
@@ -20,7 +21,7 @@ async function validatePassword({ email, password }) {
 
   if (!isValid) return false;
 
-  return omit(user.toJSON(), "password");
+  return user.toJSON().select("-password");
 }
 
 async function findUser(query) {
@@ -47,7 +48,6 @@ async function getGoogleOAuthTokens({ code }) {
     return res.data;
   } catch (error) {
     console.error(error.response.data.error);
-    log.error(error, "Failed to fetch Google Oauth Tokens");
     throw new Error(error.message);
   }
 }
@@ -64,13 +64,12 @@ async function getGoogleUser({ id_token, access_token }) {
     );
     return res.data;
   } catch (error) {
-    log.error(error, "Error fetching Google user");
     throw new Error(error.message);
   }
 }
 
 async function findAndUpdateUser(query, update, options = {}) {
-  return UserModel.findOneAndUpdate(query, update, options);
+  return User.findOneAndUpdate(query, update, options);
 }
 
 export {
