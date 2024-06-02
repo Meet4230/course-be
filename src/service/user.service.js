@@ -1,10 +1,10 @@
-import { User } from "../models/user.models";
+import { User } from "../models/user.models.js";
 import axios from "axios";
 import qs from "qs";
 async function createUser(input) {
   try {
     const user = await User.create(input);
-    return user.toJSON().select("-password");
+    return user.toJSON();
   } catch (e) {
     throw new Error(e);
   }
@@ -17,11 +17,11 @@ async function validatePassword({ email, password }) {
     return false;
   }
 
-  const isValid = await user.comparePassword(password);
+  const isValid = await user.isPasswordCorrect(password);
 
   if (!isValid) return false;
 
-  return user.toJSON().select("-password");
+  return user.toJSON();
 }
 
 async function findUser(query) {

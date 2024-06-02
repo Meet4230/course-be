@@ -1,6 +1,7 @@
-import { get } from "lodash";
-import { verifyJwt } from "../utils/jwt.utils";
-import { reIssueAccessToken } from "../service/session.service";
+import { verifyJwt } from "../utils/jwt.utils.js";
+import { reIssueAccessToken } from "../service/session.service.js";
+import pkg from "lodash";
+const { get } = pkg;
 
 const deserializeUser = async (req, res, next) => {
   const accessToken =

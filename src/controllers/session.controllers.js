@@ -2,14 +2,14 @@ import {
   createSession,
   findSessions,
   updateSession,
-} from "../service/session.service";
+} from "../service/session.service.js";
 import {
   findAndUpdateUser,
   getGoogleOAuthTokens,
   getGoogleUser,
   validatePassword,
-} from "../service/user.service";
-import { signJwt } from "../utils/jwt.utils";
+} from "../service/user.service.js";
+import { signJwt } from "../utils/jwt.utils.js";
 
 const accessTokenCookieOptions = {
   maxAge: 900000,

@@ -1,7 +1,7 @@
-import get from "lodash/get";
-import SessionModel from "../models/session.model";
-import { verifyJwt, signJwt } from "../utils/jwt.utils";
-import { findUser } from "./user.service";
+import get from "lodash/get.js";
+import SessionModel from "../models/session.models.js";
+import { verifyJwt, signJwt } from "../utils/jwt.utils.js";
+import { findUser } from "./user.service.js";
 
 async function createSession(userId, userAgent) {
   const session = await SessionModel.create({ user: userId, userAgent });
@@ -37,9 +37,4 @@ async function reIssueAccessToken({ refreshToken }) {
   return accessToken;
 }
 
-exports = {
-  createSession,
-  findSessions,
-  updateSession,
-  reIssueAccessToken,
-};
+export { createSession, findSessions, updateSession, reIssueAccessToken };

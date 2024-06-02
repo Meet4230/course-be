@@ -1,8 +1,8 @@
-import { createUser } from "../service/user.service";
+import { createUser } from "../service/user.service.js";
 async function createUserHandler(req, res) {
   try {
     const user = await createUser(req.body);
-    return res.send(user);
+    return await res.send(user);
   } catch (e) {
     return res.status(409).send(e.message);
   }

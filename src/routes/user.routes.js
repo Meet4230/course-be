@@ -1,29 +1,30 @@
+import express, { Router } from "express";
 import {
   createUserSessionHandler,
   getUserSessionsHandler,
   deleteSessionHandler,
   googleOauthHandler,
-} from "./controller/session.controller";
+} from "../controllers/session.controllers.js";
 import {
   createUserHandler,
   getCurrentUser,
-} from "./controller/user.controller";
-import requireUser from "./middleware/requireUser";
+} from "../controllers/user.controllers.js";
+import requireUser from "../middlewares/requireUser.middleware.js";
 
-const routes = (app) => {
-  app.get("/healthcheck", (req, res) => res.sendStatus(200));
+const router = Router();
 
-  app.post("/api/users", createUserHandler);
+router.get("/healthcheck", (req, res) => res.sendStatus(200));
 
-  app.get("/api/me", requireUser, getCurrentUser);
+router.post("/users", createUserHandler);
 
-  app.post("/api/sessions", createUserSessionHandler);
+router.get("/me", requireUser, getCurrentUser);
 
-  app.get("/api/sessions", requireUser, getUserSessionsHandler);
+router.post("/sessions", createUserSessionHandler);
 
-  app.delete("/api/sessions", requireUser, deleteSessionHandler);
+router.get("/sessions", requireUser, getUserSessionsHandler);
 
-  app.get("/api/sessions/oauth/google", googleOauthHandler);
-};
+router.delete("/sessions", requireUser, deleteSessionHandler);
 
-export default routes;
+router.get("/sessions/oauth/google", googleOauthHandler);
+
+export default router;

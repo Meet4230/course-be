@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-
-const privateKey = process.env.JWT_PRIVATE_KEY;
-const publicKey = process.env.JWT_PUBLIC_KEY;
+import { PRIVATE_KEY, PUBLIC_KEY } from "../../constants.js";
+const privateKey = PRIVATE_KEY;
+const publicKey = PUBLIC_KEY;
 
 function signJwt(object, options) {
   return jwt.sign(object, privateKey, {
@@ -28,7 +28,4 @@ function verifyJwt(token) {
   }
 }
 
-exports = {
-  signJwt,
-  verifyJwt,
-};
+export { signJwt, verifyJwt };

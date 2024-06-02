@@ -1,6 +1,14 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import deserializeUser from "./src/middlewares/deserializeUser.middleware.js";
+import connectDB from "./src/db/index.js";
+import userRouter from "./src/routes/user.routes.js";
+import dotenv from "dotenv";
+
+dotenv.config({
+  path: "./.env",
+});
 
 const app = express();
 
@@ -11,9 +19,14 @@ app.use(
   })
 );
 
-app.use(express.json({ limit: "16kb" }));
-app.use(express.urlencoded({ extended: true, limit: "16kb" }));
-app.use(express.static("public"));
 app.use(cookieParser());
+app.use(express.json());
+app.use(deserializeUser);
 
-export { app };
+app.listen(8000, async () => {
+  console.log(`App is running at http://localhost:8000`);
+
+  await connectDB();
+
+  app.use("/api", userRouter);
+});
