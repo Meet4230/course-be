@@ -15,7 +15,7 @@ const router = Router();
 
 router.get("/healthcheck", (req, res) => res.sendStatus(200));
 
-router.post("/users", createUserHandler);
+router.post("/register", createUserHandler);
 
 router.get("/me", requireUser, getCurrentUser);
 

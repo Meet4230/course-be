@@ -23,10 +23,10 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(deserializeUser);
 
-app.listen(8000, async () => {
-  console.log(`App is running at http://localhost:8000`);
+app.listen(process.env.PORT, async () => {
+  console.log(`App is running at ${process.env.PORT}`);
 
   await connectDB();
 
-  app.use("/api", userRouter);
+  app.use("/api/v1/users", userRouter);
 });

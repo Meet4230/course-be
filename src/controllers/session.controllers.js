@@ -16,8 +16,6 @@ const accessTokenCookieOptions = {
   httpOnly: true,
   domain: "localhost",
   path: "/",
-  sameSite: "lax",
-  secure: false,
 };
 
 const refreshTokenCookieOptions = {
