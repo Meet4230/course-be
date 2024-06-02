@@ -20,7 +20,7 @@ const accessTokenCookieOptions = {
 
 const refreshTokenCookieOptions = {
   ...accessTokenCookieOptions,
-  maxAge: 3.154e10, // 1 year
+  maxAge: 3.154e10,
 };
 
 export async function createUserSessionHandler(req, res) {
@@ -64,6 +64,7 @@ export async function deleteSessionHandler(req, res) {
 }
 
 export async function googleOauthHandler(req, res) {
+  console.log("try");
   const code = req.query.code;
 
   try {
@@ -81,6 +82,7 @@ export async function googleOauthHandler(req, res) {
         email: googleUser.email,
         name: googleUser.name,
         picture: googleUser.picture,
+        userName: googleUser.email.split("@")[0],
       },
       { upsert: true, new: true }
     );
@@ -89,19 +91,22 @@ export async function googleOauthHandler(req, res) {
 
     const accessToken = signJwt(
       { ...user.toJSON(), session: session._id },
-      { expiresIn: process.env.ACCESS_TOKEN_EXPIRY } // 15 minutes
+      { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
     );
 
     const refreshToken = signJwt(
       { ...user.toJSON(), session: session._id },
-      { expiresIn: process.env.REFRESH_TOKEN_EXPIRY } // 1 year
+      { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
     );
+    console.log("accessToken", accessToken);
+    console.log("refreshToken", refreshToken);
 
     res.cookie("accessToken", accessToken, accessTokenCookieOptions);
     res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
 
-    res.redirect(process.env.CORS_ORIGIN);
+    res.redirect(`${process.env.CORS_ORIGIN}/dashboard`);
   } catch (error) {
-    return res.redirect(`${process.env.CORS_ORIGIN}/oauth/error`);
+    console.log("catch", error);
+    return res.redirect(`${process.env.CORS_ORIGIN}/api/v1/users/oauth/error`);
   }
 }

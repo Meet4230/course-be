@@ -6,10 +6,11 @@ const userSchema = new Schema(
   {
     userName: {
       type: String,
-      require: true,
-      unique: true,
+      required: false,
       lowercase: true,
       trim: true,
+      unique: true, // Keep unique constraint if necessary
+      sparse: true, // Use sparse to handle null values uniquely
     },
     email: {
       type: String,

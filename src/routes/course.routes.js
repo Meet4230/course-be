@@ -13,7 +13,7 @@ const router = Router();
 
 router.post("/", requireUser, createCourseHandler);
 
-router.post("/user", requireUser, getCoursesByUserHandler);
+router.get("/:user", requireUser, getCoursesByUserHandler);
 
 router.put("/:courseId", requireUser, updateCourseHandler);
 
