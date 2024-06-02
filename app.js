@@ -3,8 +3,11 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import deserializeUser from "./src/middlewares/deserializeUser.middleware.js";
 import connectDB from "./src/db/index.js";
-import userRouter from "./src/routes/user.routes.js";
 import dotenv from "dotenv";
+
+//route imports
+import userRouter from "./src/routes/user.routes.js";
+import courseRouter from "./src/routes/course.routes.js";
 
 dotenv.config({
   path: "./.env",
@@ -29,4 +32,5 @@ app.listen(process.env.PORT, async () => {
   await connectDB();
 
   app.use("/api/v1/users", userRouter);
+  app.use("/api/v1/course", courseRouter);
 });
