@@ -16,8 +16,6 @@ const accessTokenCookieOptions = {
   httpOnly: true,
   domain: "https://course-fe-eta.vercel.app/",
   path: "/",
-  sameSite: "Lax",
-  secure: true,
 };
 
 const refreshTokenCookieOptions = {
@@ -27,12 +25,15 @@ const refreshTokenCookieOptions = {
 
 export async function createUserSessionHandler(req, res) {
   const user = await validatePassword(req.body);
+  console.log(user);
 
   if (!user) {
     return res.status(401).send("Invalid email or password");
   }
 
   const session = await createSession(user._id, req.get("user-agent") || "");
+
+  console.log(session);
 
   const accessToken = signJwt(
     { ...user, session: session._id },
@@ -74,7 +75,11 @@ export async function googleOauthHandler(req, res) {
   try {
     const { id_token, access_token } = await getGoogleOAuthTokens({ code });
 
+    console.log("id_token", id_token, "access_token", access_token);
+
     const googleUser = await getGoogleUser({ id_token, access_token });
+
+    console.log("googleUser", googleUser);
 
     if (!googleUser.verified_email) {
       return res.status(403).send("Google account is not verified");
@@ -92,16 +97,22 @@ export async function googleOauthHandler(req, res) {
     );
 
     const session = await createSession(user._id, req.get("user-agent") || "");
-
-    const accessToken = signJwt(
-      { ...user.toJSON(), session: session._id },
-      { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
-    );
+    let accessToken;
+    try {
+      accessToken = signJwt(
+        { ...user.toJSON(), session: session._id },
+        { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+      );
+    } catch (error) {
+      console.log("error", error);
+    }
 
     const refreshToken = signJwt(
       { ...user.toJSON(), session: session._id },
       { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
     );
+
+    console.log("accessToken", accessToken, "refreshToken", refreshToken);
 
     res.cookie("accessToken", accessToken, accessTokenCookieOptions);
     res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);

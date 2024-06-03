@@ -4,10 +4,14 @@ const privateKey = PRIVATE_KEY;
 const publicKey = PUBLIC_KEY;
 
 function signJwt(object, options) {
-  return jwt.sign(object, privateKey, {
-    ...(options && options),
-    algorithm: "RS256",
-  });
+  try {
+    return jwt.sign(object, privateKey, {
+      ...(options && options),
+      algorithm: "RS256",
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function verifyJwt(token) {
