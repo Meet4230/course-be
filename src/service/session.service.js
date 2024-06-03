@@ -31,7 +31,7 @@ async function reIssueAccessToken({ refreshToken }) {
 
   const accessToken = signJwt(
     { ...user, session: session._id },
-    { expiresIn: process.env.ACCESS_TOKEN_EXPIRY } //  30 minutes
+    { expiresIn: 300000 } //  30 minutes
   );
 
   return accessToken;

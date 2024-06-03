@@ -16,6 +16,8 @@ const accessTokenCookieOptions = {
   httpOnly: true,
   domain: "localhost",
   path: "/",
+  sameSite: "Lax",
+  secure: true,
 };
 
 const refreshTokenCookieOptions = {
@@ -41,6 +43,8 @@ export async function createUserSessionHandler(req, res) {
     { ...user, session: session._id },
     { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
   );
+
+  console.log(accessToken, refreshToken);
 
   res.cookie("accessToken", accessToken, accessTokenCookieOptions);
   res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
@@ -98,8 +102,6 @@ export async function googleOauthHandler(req, res) {
       { ...user.toJSON(), session: session._id },
       { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
     );
-    console.log("accessToken", accessToken);
-    console.log("refreshToken", refreshToken);
 
     res.cookie("accessToken", accessToken, accessTokenCookieOptions);
     res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);

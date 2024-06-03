@@ -1,10 +1,11 @@
+import mongoose from "mongoose";
 import {
   createCourse,
   findCourse,
   findAndUpdateCourse,
   deleteCourse,
-  findOneCourse,
 } from "../service/course.service.js";
+import Course from "../models/course.models.js";
 
 export async function createCourseHandler(req, res) {
   const userId = res.locals.user._id;
@@ -20,7 +21,9 @@ export async function updateCourseHandler(req, res) {
   const courseId = req.params.courseId;
   const update = req.body;
 
-  const course = await findOneCourse({ courseId });
+  const course = await Course.findOne({
+    _id: courseId,
+  });
 
   if (!course) {
     return res.sendStatus(404);
@@ -30,17 +33,27 @@ export async function updateCourseHandler(req, res) {
     return res.sendStatus(403);
   }
 
-  const updatedCourse = await findAndUpdateCourse({ courseId }, update, {
-    new: true,
-  });
+  const updatedCourse = await findAndUpdateCourse(
+    { _id: courseId.toString() },
+    update,
+    {
+      new: true,
+    }
+  );
 
   return res.send(updatedCourse);
 }
 
 export async function getCourseHandler(req, res) {
-  const courseId = req.params.courseId;
-  const course = await findCourse({ courseId });
+  const courseId = req.params.id;
+  console.log("c", JSON.stringify(courseId));
+  // const bsonId = mongoose.SchemaTypes.ObjectId(courseId);
+  // console.log("b", bsonId);
 
+  const course = await Course.findOne({
+    _id: courseId,
+  });
+  console.log("course", course);
   if (!course) {
     return res.sendStatus(404);
   }
@@ -51,10 +64,12 @@ export async function getCourseHandler(req, res) {
 export async function deleteCourseHandler(req, res) {
   const userId = res.locals.user._id;
   console.log(userId);
-  const courseId = req.params.courseId;
+  const courseId = req.params.id;
   console.log("sd", courseId);
 
-  const course = await findOneCourse({ courseId });
+  const course = await Course.findOne({
+    _id: courseId,
+  });
 
   if (!course) {
     return res.sendStatus(404);
@@ -64,9 +79,9 @@ export async function deleteCourseHandler(req, res) {
     return res.sendStatus(403);
   }
 
-  await deleteCourse({ courseId });
-
-  return res.sendStatus(200);
+  const deletedCourseId = await deleteCourse({ _id: courseId.toString() });
+  console.log(deletedCourseId);
+  return res.send({ courseId: deletedCourseId._id });
 }
 
 export async function getCoursesByUserHandler(req, res) {

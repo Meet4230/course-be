@@ -1,4 +1,4 @@
-export const DB_NAME = "coursebe";
+export const DB_NAME = "fullstack-course";
 
 export const PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnUu8ot2XJmK60UtDqgCe

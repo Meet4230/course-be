@@ -5,12 +5,6 @@ const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10);
 
 const courseSchema = new mongoose.Schema(
   {
-    courseId: {
-      type: String,
-      required: true,
-      unique: true,
-      default: () => `course_${nanoid()}`,
-    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

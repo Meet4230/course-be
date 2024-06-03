@@ -17,8 +17,8 @@ router.get("/:user", requireUser, getCoursesByUserHandler);
 
 router.put("/:courseId", requireUser, updateCourseHandler);
 
-router.get("/:courseId", requireUser, getCourseHandler);
+router.get("/courseId/:id", requireUser, getCourseHandler);
 
-router.delete("/:courseId", requireUser, deleteCourseHandler);
+router.delete("/courseId/:id", requireUser, deleteCourseHandler);
 
 export default router;

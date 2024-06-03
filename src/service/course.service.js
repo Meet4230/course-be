@@ -17,5 +17,5 @@ export async function findAndUpdateCourse(query, update, options) {
 }
 
 export async function deleteCourse(query) {
-  return Course.findOneAndDelete(query);
+  return Course.findByIdAndDelete(query);
 }
