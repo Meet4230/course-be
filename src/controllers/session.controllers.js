@@ -14,10 +14,8 @@ import { signJwt } from "../utils/jwt.utils.js";
 const accessTokenCookieOptions = {
   maxAge: 900000,
   httpOnly: true,
-  domain: "localhost",
+  domain: "https://course-fe-eta.vercel.app/",
   path: "/",
-  sameSite: "Lax",
-  secure: true,
 };
 
 const refreshTokenCookieOptions = {
