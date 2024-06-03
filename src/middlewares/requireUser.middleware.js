@@ -1,5 +1,5 @@
 const requireUser = (req, res, next) => {
-  const user = req.locals.user;
+  const user = res.locals.user;
 
   if (!user) {
     return res.sendStatus(403);
