@@ -31,7 +31,7 @@ const deserializeUser = async (req, res, next) => {
       res.cookie("accessToken", newAccessToken, {
         maxAge: 900000, // 15 mins
         httpOnly: true,
-        domain: "localhost",
+        domain: "https://course-fe-eta.vercel.app/",
         path: "/",
         sameSite: "strict",
         secure: false,
