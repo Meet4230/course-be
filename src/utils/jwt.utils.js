@@ -10,7 +10,7 @@ function signJwt(object, options) {
       algorithm: "RS256",
     });
   } catch (error) {
-    console.log(error);
+    console.log("jwtsign", error);
   }
 }
 
