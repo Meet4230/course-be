@@ -39,12 +39,16 @@ async function getGoogleOAuthTokens({ code }) {
     grant_type: "authorization_code",
   };
 
+  console.log("user service values", values);
+
   try {
     const res = await axios.post(url, qs.stringify(values), {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
     });
+
+    console.log("res.data", res.data);
     return res.data;
   } catch (error) {
     console.error(error.response.data.error);

@@ -75,8 +75,12 @@ export async function googleOauthHandler(req, res) {
 
   try {
     const { id_token, access_token } = await getGoogleOAuthTokens({ code });
-
-    console.log("id_token", id_token, "access_token", access_token);
+    console.log(
+      "id_token seasion controller",
+      id_token,
+      "access_token seasion controller",
+      access_token
+    );
 
     const googleUser = await getGoogleUser({ id_token, access_token });
 
@@ -96,7 +100,7 @@ export async function googleOauthHandler(req, res) {
       },
       { upsert: true, new: true }
     );
-
+    console.log("user seassion", user);
     const session = await createSession(user._id, req.get("user-agent") || "");
     let accessToken;
     try {
