@@ -15,7 +15,7 @@ const accessTokenCookieOptions = {
   maxAge: 900000, // 15 mins
   httpOnly: true,
   path: "/",
-  domain: "https://course-fe-eta.vercel.app",
+  domain: "course-fe-eta.vercel.app",
   secure: true,
   sameSite: true,
 };
