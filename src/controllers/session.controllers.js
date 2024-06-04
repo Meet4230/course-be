@@ -12,9 +12,11 @@ import {
 import { signJwt } from "../utils/jwt.utils.js";
 
 const accessTokenCookieOptions = {
+  maxAge: 900000, // 15 mins
   httpOnly: true,
-  sameSite: true,
+  path: "/",
   secure: true,
+  sameSite: true,
 };
 
 const refreshTokenCookieOptions = {
