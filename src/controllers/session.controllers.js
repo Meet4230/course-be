@@ -12,9 +12,9 @@ import {
 import { signJwt } from "../utils/jwt.utils.js";
 
 const accessTokenCookieOptions = {
-  maxAge: 900000, // 15 mins
   httpOnly: true,
-  path: "/",
+  sameSite: true,
+  signed: true,
   secure: true,
 };
 
@@ -47,9 +47,8 @@ export async function createUserSessionHandler(req, res) {
 
   console.log(accessToken, refreshToken);
 
-  res.cookie("testCookie", "test_cookie_value");
-  // res.cookie("accessToken", accessToken, accessTokenCookieOptions);
-  // res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
+  res.cookie("accessToken", accessToken, accessTokenCookieOptions);
+  res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
 
   return res.send({ accessToken, refreshToken });
 }
