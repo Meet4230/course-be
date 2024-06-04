@@ -37,7 +37,6 @@ const deserializeUser = async (req, res, next) => {
         domain: "course-fe-eta.vercel.app",
         path: "/",
         secure: true,
-        sameSite: "None",
       });
     }
 

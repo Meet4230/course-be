@@ -17,7 +17,6 @@ const accessTokenCookieOptions = {
   domain: "course-fe-eta.vercel.app",
   path: "/",
   secure: true,
-  sameSite: "None",
 };
 
 const refreshTokenCookieOptions = {
