@@ -12,10 +12,11 @@ import {
 import { signJwt } from "../utils/jwt.utils.js";
 
 const accessTokenCookieOptions = {
-  maxAge: 900000,
+  maxAge: 900000, // 15 mins
   httpOnly: true,
-  domain: "course-fe-eta.vercel.app", // Domain without protocol
+  domain: "course-fe-eta.vercel.app",
   path: "/",
+  secure: true,
   sameSite: "None",
 };
 

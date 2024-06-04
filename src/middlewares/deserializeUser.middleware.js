@@ -8,6 +8,8 @@ const deserializeUser = async (req, res, next) => {
     get(req, "cookies.accessToken") ||
     get(req, "headers.authorization", "").replace(/^Bearer\s/, "");
 
+  console.log("deserializeUser", accessToken);
+
   const refreshToken =
     get(req, "cookies.refreshToken") || get(req, "headers.x-refresh");
 
@@ -18,6 +20,7 @@ const deserializeUser = async (req, res, next) => {
   const { decoded, expired } = verifyJwt(accessToken);
 
   if (decoded) {
+    console.log(decoded);
     res.locals.user = decoded;
     return next();
   }
@@ -31,10 +34,10 @@ const deserializeUser = async (req, res, next) => {
       res.cookie("accessToken", newAccessToken, {
         maxAge: 900000, // 15 mins
         httpOnly: true,
-        domain: "https://course-fe-eta.vercel.app/",
+        domain: "course-fe-eta.vercel.app",
         path: "/",
-        sameSite: "strict",
-        secure: false,
+        secure: true,
+        sameSite: "None",
       });
     }
 
