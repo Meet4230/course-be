@@ -117,7 +117,12 @@ export async function googleOauthHandler(req, res) {
       { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
     );
 
-    console.log("accessToken", accessToken, "refreshToken", refreshToken);
+    console.log(
+      "accessToken sesion controller",
+      accessToken,
+      "refreshToken seassion controller",
+      refreshToken
+    );
 
     res.cookie("accessToken", accessToken, accessTokenCookieOptions);
     res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
