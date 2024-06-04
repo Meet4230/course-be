@@ -48,9 +48,10 @@ async function getGoogleOAuthTokens({ code }) {
       },
     });
 
-    console.log("res.data", res.data);
+    console.log("res.data user service", res.data);
     return res.data;
   } catch (error) {
+    console.log(error.response.data.error);
     console.error(error.response.data.error);
     throw new Error(error.message);
   }
@@ -66,6 +67,7 @@ async function getGoogleUser({ id_token, access_token }) {
         },
       }
     );
+    console.log("res.data user service", res.data);
     return res.data;
   } catch (error) {
     throw new Error(error.message);
