@@ -14,7 +14,6 @@ import { signJwt } from "../utils/jwt.utils.js";
 const accessTokenCookieOptions = {
   httpOnly: true,
   sameSite: true,
-  signed: true,
   secure: true,
 };
 
