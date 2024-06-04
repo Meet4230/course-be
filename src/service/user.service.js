@@ -39,8 +39,6 @@ async function getGoogleOAuthTokens({ code }) {
     grant_type: "authorization_code",
   };
 
-  console.log("user service values", values);
-
   try {
     const res = await axios.post(url, qs.stringify(values), {
       headers: {
@@ -48,11 +46,8 @@ async function getGoogleOAuthTokens({ code }) {
       },
     });
 
-    console.log("res.data user service", res.data);
     return res.data;
   } catch (error) {
-    console.log(error.response.data.error);
-    console.error(error.response.data.error);
     throw new Error(error.message);
   }
 }
@@ -67,7 +62,6 @@ async function getGoogleUser({ id_token, access_token }) {
         },
       }
     );
-    console.log("res.data user service", res.data);
     return res.data;
   } catch (error) {
     throw new Error(error.message);

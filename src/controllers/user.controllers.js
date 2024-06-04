@@ -9,7 +9,6 @@ async function createUserHandler(req, res) {
 }
 
 async function getCurrentUser(req, res) {
-  console.log("me", res.locals.user);
   return res.send(res.locals.user);
 }
 

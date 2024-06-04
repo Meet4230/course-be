@@ -12,7 +12,7 @@ import {
 import { signJwt } from "../utils/jwt.utils.js";
 
 const accessTokenCookieOptions = {
-  maxAge: 900000, // 15 mins
+  maxAge: 18000000, // 30 mins
   httpOnly: true,
   path: "/",
   domain: "course-fe-eta.vercel.app",
@@ -27,15 +27,12 @@ const refreshTokenCookieOptions = {
 
 export async function createUserSessionHandler(req, res) {
   const user = await validatePassword(req.body);
-  console.log(user);
 
   if (!user) {
     return res.status(401).send("Invalid email or password");
   }
 
   const session = await createSession(user._id, req.get("user-agent") || "");
-
-  console.log(session);
 
   const accessToken = signJwt(
     { ...user, session: session._id },
@@ -46,8 +43,6 @@ export async function createUserSessionHandler(req, res) {
     { ...user, session: session._id },
     { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
   );
-
-  console.log(accessToken, refreshToken);
 
   res.cookie("accessToken", accessToken, accessTokenCookieOptions);
   res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
@@ -71,21 +66,12 @@ export async function deleteSessionHandler(req, res) {
 }
 
 export async function googleOauthHandler(req, res) {
-  console.log("try");
   const code = req.query.code;
 
   try {
     const { id_token, access_token } = await getGoogleOAuthTokens({ code });
-    console.log(
-      "id_token seasion controller",
-      id_token,
-      "access_token seasion controller",
-      access_token
-    );
 
     const googleUser = await getGoogleUser({ id_token, access_token });
-
-    console.log("googleUser", googleUser);
 
     if (!googleUser.verified_email) {
       return res.status(403).send("Google account is not verified");
@@ -101,7 +87,6 @@ export async function googleOauthHandler(req, res) {
       },
       { upsert: true, new: true }
     );
-    console.log("user seassion", user);
     const session = await createSession(user._id, req.get("user-agent") || "");
     let accessToken;
     try {
@@ -109,20 +94,11 @@ export async function googleOauthHandler(req, res) {
         { ...user.toJSON(), session: session._id },
         { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
       );
-    } catch (error) {
-      console.log("error", error);
-    }
+    } catch (error) {}
 
     const refreshToken = signJwt(
       { ...user.toJSON(), session: session._id },
       { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
-    );
-
-    console.log(
-      "accessToken sesion controller",
-      accessToken,
-      "refreshToken seassion controller",
-      refreshToken
     );
 
     res.cookie("accessToken", accessToken, accessTokenCookieOptions);
@@ -130,7 +106,6 @@ export async function googleOauthHandler(req, res) {
 
     res.redirect(`${process.env.CORS_ORIGIN}/dashboard`);
   } catch (error) {
-    console.log("catch", error);
     return res.redirect(`${process.env.CORS_ORIGIN}/api/v1/users/oauth/error`);
   }
 }
