@@ -15,15 +15,16 @@ const accessTokenCookieOptions = {
   maxAge: 18000000, // 30 mins
   httpOnly: true,
   path: "/",
-  domain: "course-fe-eta.vercel.app",
   secure: true,
-  sameSite: true,
+  sameSite: "None",
 };
 
 const refreshTokenCookieOptions = {
   ...accessTokenCookieOptions,
   maxAge: 3.154e10,
 };
+
+//// 1 req.body
 
 export async function createUserSessionHandler(req, res) {
   const user = await validatePassword(req.body);
@@ -64,7 +65,7 @@ export async function deleteSessionHandler(req, res) {
     refreshToken: null,
   });
 }
-
+//// 222 Google
 export async function googleOauthHandler(req, res) {
   const code = req.query.code;
 
