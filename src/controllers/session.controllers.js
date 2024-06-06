@@ -12,7 +12,6 @@ import {
 import { signJwt } from "../utils/jwt.utils.js";
 
 const accessTokenCookieOptions = {
-  maxAge: 18000000, // 30 mins
   httpOnly: true,
   path: "/",
   secure: true,
@@ -23,8 +22,6 @@ const refreshTokenCookieOptions = {
   ...accessTokenCookieOptions,
   maxAge: 3.154e10,
 };
-
-//// 1 req.body
 
 export async function createUserSessionHandler(req, res) {
   const user = await validatePassword(req.body);
@@ -102,10 +99,23 @@ export async function googleOauthHandler(req, res) {
       { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
     );
 
-    res.cookie("accessToken", accessToken, accessTokenCookieOptions);
-    res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
+    console.log("accessToken: ", accessToken);
+    console.log("refreshToken: ", refreshToken);
 
-    res.redirect(`${process.env.CORS_ORIGIN}/dashboard`);
+    // Instead of setting cookies in the response headers, we'll pass them as JSON data
+    const cookieData = {
+      accessToken,
+      refreshToken,
+      accessTokenOptions: accessTokenCookieOptions,
+      refreshTokenOptions: refreshTokenCookieOptions,
+    };
+
+    // Redirect to a client-side route that handles setting the cookies
+    res.redirect(
+      `${process.env.CORS_ORIGIN}/set-cookies?data=${encodeURIComponent(
+        JSON.stringify(cookieData)
+      )}`
+    );
   } catch (error) {
     return res.redirect(`${process.env.CORS_ORIGIN}/api/v1/users/oauth/error`);
   }
